@@ -1,0 +1,56 @@
+# General
+.DS_Store
+.env
+.venv/
+/venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*~
+.Python
+pip-log.txt
+pip-delete-this-arg-files.txt
+.tox/
+.coverage
+.coverage.*
+.ipynb_checkpoints
+.pytest_cache/
+htmlcov/
+.nox/
+.mypy_cache/
+.pyre_check/
+.ruff_cache/
+
+# IDE-specific files
+## JetBrains IDEs (PyCharm, WebStorm, IntelliJ, etc.)
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/ # Cursor also uses .vscode
+
+# TypeScript/JavaScript
+node_modules/
+dist/
+build/
+*.js.map
+*.css.map
+.parcel-cache/
+.rollup.cache/
+.next/ # Next.js specific
+.nuxt/ # Nuxt.js specific
+out/ # Used by some TS compilers/build tools
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.eslintcache
+.stylelintcache
+.sass-cache/
+coverage/ # JS/TS test coverage
+
+# custom
+browser_use_output/
+test_cases/
