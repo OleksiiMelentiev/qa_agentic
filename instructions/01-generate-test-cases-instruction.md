@@ -85,15 +85,16 @@ File Location: Save the generated JSON file into a dedicated 'test_cases' folder
 
 Content Population:
 
-- Each test case should be a JSON object with the following fields:
-  - summary: A concise, descriptive title for the test case.
-  - description: A more detailed explanation or a summary of preconditions.
-  - steps: An array of strings, each representing a distinct, numbered step (e.g., ["Go to URL", "Do X", "Do Y"]). Ensure the first step is always 'navigate to URL' with the specific URL for the test case.
-  - expected_result: The anticipated outcome for the test case.
-  - priority: (e.g., High, Medium, Low) based on the importance of the requirement.
-  - type: (e.g., Functional, UI, Performance, Security).
-  - jira_task: The original Jira task number for traceability.
-  - (Any other relevant metadata as determined in Step 3 and mapped in Step 4.)
+* Each test case should be a JSON object with the following fields:
+  ** summary: A concise, descriptive title for the test case.
+  ** description: A more detailed explanation or a summary of preconditions.
+  ** steps: An array of strings, each representing a distinct, numbered step (e.g., ["Go to URL", "Do X", "Do Y"]). Ensure the first step is always 'navigate to URL' with the specific URL for the test case.
+  *** crucual: URL should be full url. If it's not clear from the Jira description ask a user to provide page full URL
+  ** expected_result: The anticipated outcome for the test case.
+  ** priority: (e.g., High, Medium, Low) based on the importance of the requirement.
+  ** type: (e.g., Functional, UI, Performance, Security).
+  ** jira_task: The original Jira task number for traceability.
+  ** (Any other relevant metadata as determined in Step 3 and mapped in Step 4.)
 
 Output: Provide the generated JSON file to the user, either by making it available for download or by indicating its successful creation and location within the 'test_cases' folder in the system.
 
