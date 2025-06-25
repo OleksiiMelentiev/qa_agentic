@@ -30,8 +30,7 @@ async def execute_browser_script_async(test_name, test_scenario):
 
 
 async def main():
-    # file_name = sys.argv[1]
-    file_name = '/Users/amelentyev/Documents/xaldej/git/qa_agentic/test_cases/AG-1_TestCases.json'
+    file_name = sys.argv[1]
     tests = read_test_cases_from_file(file_name)
 
     for test in tests:
