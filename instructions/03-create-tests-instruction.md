@@ -45,6 +45,7 @@ Assumptions for AI:
 * The structure of the test_cases/<Jira-Ticket>_TestCases.json file is an array of objects, each with a name property.
 * The structure of the <test_case_name>.json browser output files is consistent and understandable for mapping to Playwright actions. You may need to provide the AI with a schema or examples of this structure.
 * The AI has access to a Playwright-specific knowledge base to correctly translate different types of browser interactions into appropriate Playwright API calls (e.g., click(), fill(), goto(), expect(), locator()).
+* The AI should proceed immediately to generate and save the Playwright test files for all test cases found, without asking for further user confirmation
 
 Error Handling (AI Considerations):
 
