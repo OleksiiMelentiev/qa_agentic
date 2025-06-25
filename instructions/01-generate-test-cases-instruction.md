@@ -89,6 +89,7 @@ Content Population:
   - summary: A concise, descriptive title for the test case.
   - description: A more detailed explanation or a summary of preconditions.
   - steps: An array of strings, each representing a distinct, numbered step (e.g., ["Go to URL", "Do X", "Do Y"]). Ensure the first step is always 'navigate to URL' with the specific URL for the test case.
+  ** crutual: URL should be full url. If it's not clear from the Jira description ask a user to provide page full URL
   - expected_result: The anticipated outcome for the test case.
   - priority: (e.g., High, Medium, Low) based on the importance of the requirement.
   - type: (e.g., Functional, UI, Performance, Security).
