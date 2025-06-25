@@ -1,0 +1,39 @@
+# PyCharm
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.Python/
+env/
+venv/
+lib/
+bin/
+include/
+pip-log.txt
+pip-delete-this-arg.txt
+.tox/
+.pytest_cache/
+.coverage
+.mypy_cache/
+.venv/
+build/
+dist/
+*.egg-info/
+htmlcov/
+.nox/
+.ipynb_checkpoints/
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+# Misc
+.env
+.flaskenv
+*.sqlite3
