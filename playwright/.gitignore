@@ -78,3 +78,10 @@ coverage/
 # For example:
 # my_secret_key.pem
 # data/
+
+# Playwright
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

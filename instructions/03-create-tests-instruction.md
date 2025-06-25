@@ -10,14 +10,14 @@ jira_ticket: The Jira ticket identifier (e.g., AG-1). This will be used to locat
 
 1. Request User Input: Prompt the user to enter the jira_ticket (e.g., AG-1) that corresponds to the set of test cases.
 
-2. Locate Test Cases File: Construct the full path to the test cases file: test_cases/<jira_ticket>_TestCases.json (e.g., test_cases/AG-1_TestCases.json).
+2. Locate Test Cases File: Construct the full path to the test cases file: test_cases/<jira_ticket>.json (e.g., test_cases/AG-1.json).
 
 3. Read Test Cases:
-   * Open and read the JSON file specified by test_cases/<jira_ticket>_TestCases.json.
+   * Open and read the JSON file specified by test_cases/<jira_ticket>.json.
    * Parse the JSON content. Assume the file contains an array of test case objects. Each test case object should have a name property (e.g., {"name": "test_case_1"}).
 
 4. Generate Playwright Test File:
-   * Create a new Playwright TypeScript test file for the current Jira ticket: tests/<jira_ticket>.spec.ts (e.g., tests/AG-1.spec.ts).
+   * Create a new Playwright TypeScript test file for the current Jira ticket: playwright/tests/<jira_ticket>.spec.ts (e.g., playwright/tests/AG-1.spec.ts).
    * Standard Playwright Setup: Include necessary imports: import { test, expect } from '@playwright/test';
    * For each test_case in the read list, do the following:
 
@@ -38,20 +38,20 @@ jira_ticket: The Jira ticket identifier (e.g., AG-1). This will be used to locat
        * If browser output indicates an "assertion" (e.g., "text_content_check" on selector with expected_text): await expect(page.locator('<selector>')).toHaveText('<expected_text>');
      * Add comments to the generated code for clarity, especially for complex actions or assertions.
 
-   * Save Test File: Save the generated Playwright TypeScript code to tests/<jira_ticket>.spec.ts.
+   * Save Test File: Save the generated Playwright TypeScript code to playwright/tests/<jira_ticket>.spec.ts.
 
 ## Assumptions for AI:
 
-* The test_cases/ directory exists and contains the specified JSON file named <Jira-Ticket>_TestCases.json.
+* The test_cases/ directory exists and contains the specified JSON file named <Jira-Ticket>.json.
 * The browser output .json files are located in the browser_use_output directory.
-* The structure of the test_cases/<Jira-Ticket>_TestCases.json file is an array of objects, each with a name property.
+* The structure of the test_cases/<Jira-Ticket>.json file is an array of objects, each with a name property.
 * The structure of the <test_case_name>.json browser output files is consistent and understandable for mapping to Playwright actions. You may need to provide the AI with a schema or examples of this structure.
 * The AI has access to a Playwright-specific knowledge base to correctly translate different types of browser interactions into appropriate Playwright API calls (e.g., click(), fill(), goto(), expect(), locator()).
 * The AI should proceed immediately to generate and save the Playwright test file for all test cases found, without asking for further user confirmation
 
 ## Error Handling (AI Considerations):
 
-* Handle cases where <Jira-Ticket>_TestCases.json does not exist in test_cases/.
+* Handle cases where <Jira-Ticket>.json does not exist in test_cases/.
 * Handle cases where a browser_use_output/<test_case_name>.json file is missing or corrupted.
 * Provide informative feedback to the user in case of errors.
 
