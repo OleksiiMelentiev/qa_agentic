@@ -1,0 +1,26 @@
+{
+  "name": "qa_agentic",
+  "version": "1.0.0",
+  "description": "This project automates the execution of test cases using the browser-use agent. The test cases are parsed from a markdown file and executed using the `main.py` script.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OleksiiMelentiev/qa_agentic.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OleksiiMelentiev/qa_agentic/issues"
+  },
+  "homepage": "https://github.com/OleksiiMelentiev/qa_agentic#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.53.1"
+  }
+}
