@@ -1,39 +1,46 @@
-AI Instructions: Test Case Processing
+# Test Case Processing Instruction
 
-This document outlines the steps for an AI to process test cases from a user-provided Jira ticket number.
-Main Goal:
+## Objective
+Process all test cases for a given Jira ticket by running a single command that takes the ticket number as input.
 
-To process all test cases for a given Jira ticket by running a single command that takes the ticket number as input. The AI should only ask the user for the Jira ticket number (e.g., AG-1), construct the filename, and then execute the script with that filename as the argument.
+## Prerequisites/Assumptions
+- The `test_cases/` directory exists and contains the relevant JSON file.
+- The Python environment is located at `./browser_use/.venv/bin/python` (do not use any other environment or `python3`).
 
+## Step-by-Step Instructions
 
+### 1. Obtain Jira Ticket Number
+- Request the user to provide the Jira ticket number (e.g., `AG-1`) if not already given.
+- The process cannot proceed without this input.
 
-Instructions:
+### 2. Construct Test Case File Name
+- Build the file name as `<jira_ticket>.json` (e.g., `AG-1.json`).
+- The file should be located in the `test_cases/` directory.
+- Example: `test_cases/AG-1.json`
 
-    1. Obtain Jira Ticket Number:
-        Action: Request the user to provide the Jira ticket number (e.g., AG-1) if not.
-        Context: The process cannot proceed unless the user provides a Jira ticket number. Always prompt the user to supply the ticket number if it is not given.
-        * jira_ticket: The Jira ticket number (e.g., AG-1) that identifies the test case file.
+### 3. Execute main.py
+- Run the following command, replacing `<file_full_name>` with the full path to the constructed file:
 
-    2. Construct Test Case File Name:
-        Action: Build the file name as <jira_ticket>.json (e.g., AG-1.json).
-        Context: The file should be located in the test_cases/ directory.
-        * file_path: test_cases/<jira_ticket>.json
+```sh
+./browser_use/.venv/bin/python browser_use/main.py <file_full_name>
+```
 
-    3. Execute main.py:
-        Action: Run the following command, replacing <file_full_name> with the full path of the file constructed from the Jira ticket number.
-        ./browser_use/.venv/bin/python browser_use/main.py <file_full_name>
-        ** crucial: use ./browser_use/.venv/bin/python as env to run. Don't try to use any other env
-        ** crucial: don't use python3
-        
+- **Important:**
+  - Use only `./browser_use/.venv/bin/python` as the environment.
+  - Do not use `python3` or any other Python environment.
 
-Example Workflow:
+## Example Workflow
 
-Let's assume the user provides a Jira ticket number AG-1:
+Suppose the user provides the Jira ticket number `AG-1`:
 
-The constructed file name is: test_cases/AG-1.json
+- The constructed file name is: `test_cases/AG-1.json`
+- The command to run is:
 
-The command to run is:
-
-./browser_use/.venv/bin/python browser_use/main.py User/full/path/test_cases/AG-1.json
+```sh
+./browser_use/.venv/bin/python browser_use/main.py /User/full/path/test_cases/AG-1.json
+```
 
 This approach ensures all test cases for the specified Jira ticket are processed in a single execution, using the constructed filename.
+
+## Output/Result
+- All test cases for the specified Jira ticket are processed by the script, using the provided JSON file as input.
