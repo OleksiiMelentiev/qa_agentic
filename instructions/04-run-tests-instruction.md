@@ -31,10 +31,10 @@ Step 0: Prompt for Jira Task
 Prompt the user to input the Jira task identifier (e.g., AG-123) that is relevant to the current testing session.
 
 Step 1: Find Relevant Test Files
-Identify all test files in the 'tests/' directory whose filenames start with the provided Jira Task prefix (e.g., AG-123.spec.ts).
+Identify all test files in the 'playwright/tests/' directory whose filenames start with the provided Jira Task prefix (e.g., AG-123.spec.ts).
 
 Step 2: Run Tests from Matching Files
-Execute tests from all files in the 'tests/' directory that contain the Jira Task as a prefix in their filename.
+Execute tests from all files in the 'playwright/tests/' directory that contain the Jira Task as a prefix in their filename.
 
 Step 3: Analyze Test Results
 Parse Results: Process the captured output and test reports.
