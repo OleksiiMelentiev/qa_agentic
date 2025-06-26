@@ -1,150 +1,86 @@
-# AI Test Analysis and Bug Reporting Instruction
+# Test Analysis and Bug Reporting Instruction
 
-This document outlines the process for the AI to run tests, analyze their results, and determine the appropriate subsequent action: fixing tests, reporting bugs, or seeking user clarification.
+## Objective
+Automate the initial triage of test failures, distinguishing between issues originating from the test suite itself and those indicating a product defect.
 
-## Goal
-The primary goal is to automate the initial triage of test failures, distinguishing between issues originating from the test suite itself and those indicating a product defect.
+## Prerequisites/Assumptions
+- Access to a test execution environment (e.g., Playwright runner).
+- Ability to parse test reports (e.g., JUnit XML, console output).
+- Access to Atlassian Jira via a pre-configured API for bug reporting.
+- Ability to understand and modify code, especially test scripts.
 
-## Prerequisites and Setup (Assumed Capabilities)
-For this process, the AI is assumed to have access to and the capability to use the following:
+## Step-by-Step Instructions
 
-Test Execution Environment: A method to execute test files provided as context (e.g., an integrated test runner, the ability to invoke language-specific testing frameworks).
+### 1. Obtain Jira Task Number
+- Prompt the user to input the Jira task identifier (e.g., `AG-123`) relevant to the current testing session.
 
-Test Result Parser: The ability to parse test reports (e.g., JUnit XML, console output) to extract:
+### 2. Find Relevant Test Files
+- Identify all test files in the `playwright/tests/` directory whose filenames start with the provided Jira Task prefix (e.g., `AG-123.spec.ts`).
 
-Overall pass/fail status
+### 3. Run Tests from Matching Files
+- Switch to the `playwright` directory:
+  ```sh
+  cd playwright
+  ```
+- Execute tests from all files in the `tests/` directory that contain the Jira Task as a prefix in their filename.
+- Add the `--reporter=list` flag to the test command for human-readable output:
+  ```sh
+  npx playwright test tests/AG-123.spec.ts --reporter=list
+  ```
 
-Individual test case pass/fail status
+### 4. Analyze Test Results
+- Parse the output produced by the `list` reporter to understand test results, including pass/fail status, error messages, and stack traces.
+- Identify and log all failing test cases with details (name, error, stack trace, location).
+- Categorize failures using initial heuristics:
+  - **Potential Test Issue Indicators:**
+    - Assertion errors due to calculation errors in the test
+    - FileNotFoundError or similar setup issues
+    - Errors in setup/teardown hooks
+    - Timeouts in usually fast tests
+    - Errors related to mocks, test data, or environment
+    - Missing/incorrect test dependencies
+    - Explicit notes that the product behavior is correct
+  - **Potential Product Bug Indicators:**
+    - Errors from product code (not test code)
+    - Unhandled exceptions from product logic
+    - Logical failures contradicting requirements
+    - Crashes or unexpected termination
 
-Error messages and stack traces for failures
+### 5. Decision Logic
+- For each failed test, determine if the problem is:
+  - In the test (clear evidence of test script fault)
+  - In the product (clear evidence of product defect)
+  - Unclear (cannot definitively determine)
 
-Duration of tests (for potential flakiness detection)
+### 6. Take Action Based on Analysis
+- **If Problem is in Test:**
+  - Diagnose the specific line(s) and reason for failure.
+  - Propose a concrete code change to the test file.
+  - Present the proposed changes as a code diff or modified code block, with an explanation.
+- **If Problem is in the Product (Bug):**
+  - Create a Jira bug report using Playwright MCP, including all relevant details from the test failure.
+- **If Problem is Unclear:**
+  - Present the analysis and results to the user.
+  - Request the user to analyze and choose the next steps.
 
-Atlassian MCP Integration: Access to Atlassian Jira via a pre-configured API (e.g., atlassian_mcp_api.create_issue) with the necessary authentication and permissions to create bug tickets.
+## Example Output
 
-Code Editing/Analysis Capabilities: The ability to understand and modify code, especially test scripts.
-
-## Core Process
-Follow these steps sequentially upon receiving a request to run and analyze tests:
-
-Step 0: Prompt for Jira Task
-Prompt the user to input the Jira task identifier (e.g., AG-123) that is relevant to the current testing session.
-
-Step 1: Find Relevant Test Files
-Identify all test files in the 'playwright/tests/' directory whose filenames start with the provided Jira Task prefix (e.g., AG-123.spec.ts).
-
-Step 2: Run Tests from Matching Files
-Before executing the tests, switch to the 'playwright' directory:
-
-```
-cd playwright
-```
-
-Then, execute tests from all files in the 'tests/' directory that contain the Jira Task as a prefix in their filename.
-
-Step 3: Analyze Test Results
-Parse Results: Process the captured output and test reports.
-
-Action: Parse test results.
-
-Identify Failures: List all failing test cases. For each failure, extract:
-
-Test case name/identifier
-
-Full error message
-
-Stack trace
-
-File and line number of the failure point.
-
-Action: Identify and log all failing test cases with details (name, error, stack trace, location).
-
-Categorize Failures (Initial Heuristics): Based on error messages and stack traces, attempt a preliminary categorization.
-
-Potential Test Issue Indicators:
-
-Assertion errors where the expected/actual values are clearly mismatched due to obvious calculation errors in the test.
-
-FileNotFoundError or similar issues pointing to test setup resources.
-
-Errors within setUp/tearDown or beforeEach/afterEach methods.
-
-Timeouts in tests that are usually fast, suggesting test flakiness or environmental issues rather than a core product bug.
-
-Errors related to mock objects, test data generation, or test environment configuration.
-
-Errors indicating a missing or incorrect test dependency.
-
-Errors explicitly stating "Test failed due to X, but product behavior seems correct" (if such details are in the test output).
-
-Potential Product Bug Indicators:
-
-Errors originating deep within product code (not test framework or test utility code).
-
-Unhandled exceptions (e.g., NullPointerException, IndexOutOfBoundsException, TypeError) from product logic.
-
-Logical failures where the product's output directly contradicts a clear requirement (e.g., "Expected status to be 'active' but got 'inactive'").
-
-Crashes or unexpected termination of the application under test.
-
-Step 4: Decision Logic
-For each failed test:
-
-Determine Problem Origin: Based on the analysis in Step 3, decide if the problem is primarily:
-
-Problem is in the Test: Clear evidence points to a fault in the test script (e.g., incorrect assertion, setup, data).
-
-Problem is in the Product (Bug): Clear evidence points to a defect in the application code.
-
-Unclear: Cannot definitively determine if the issue is with the test or the product, or if both are contributing.
-
-Step 5: Action: Fix Test (If Problem is in Test)
-If the decision for a failed test is "Problem is in the Test":
-
-Diagnose Test Issue: Pinpoint the specific line(s) and reason for the test failure. Common reasons include:
-
-Incorrect assertion logic.
-
-Invalid test data or setup.
-
-Flaky test due to race conditions or timing issues.
-
-Outdated expected values.
-
-Missing test environment configuration.
-
-Suggest Fix: Propose a concrete code change to the test file.
-
-Action: Suggesting a fix for test: [test_name] in [file_path].
-
-Output: Present the proposed changes as a code diff or directly modified code block, along with an explanation of why the fix is being applied.
-
-Example Output:
-
+**Test Failure Fix Example:**
 ```diff
 --- a/path/to/your_test_file.py
 +++ b/path/to/your_test_file.py
 @@ -10,7 +10,7 @@
- def test_user_creation_success():
-     # ... setup
+def test_user_creation_success():
+    # ... setup
 -    assert created_user.status == "pending"
 +    assert created_user.status == "active" # Updated assertion based on new API spec
-     # ... more assertions
-
-This test was failing because the status field for newly created users is now 'active' instead of 'pending' according to the latest API documentation. The assertion has been updated accordingly.
+    # ... more assertions
 ```
+_This test was failing because the status field for newly created users is now 'active' instead of 'pending' according to the latest API documentation. The assertion has been updated accordingly._
 
-Step 6: Action: Create Bug Report (If Problem is in the Product)
-If the decision for a failed test is "Problem is in the Product (Bug)":
-
-Create Bug Report: Use Playwright MCP to create a bug report in Jira, including all relevant details from the test failure (test name, error message, stack trace, and any other context).
-
-Action: Create a Jira bug report using Playwright MCP for the product issue.
-
-Step 7: Action: User Analysis Required (If Problem is Unclear)
-If the decision for a failed test is "Unclear":
-
-Ask User for Input: Present the analysis and results to the user, and request that the user analyze the results and choose the next steps (e.g., whether to treat as a test issue, a product bug, or provide more information).
-
-Action: Ask the user to analyze the results and choose the next steps if the problem origin is unclear.
+## Output/Result
+- All test results are analyzed and categorized.
+- If a test issue is found, a fix is proposed.
+- If a product bug is found, a Jira bug report is created.
+- If unclear, the user is prompted for further analysis.
 
