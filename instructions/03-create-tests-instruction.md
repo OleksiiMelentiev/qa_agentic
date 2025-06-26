@@ -1,6 +1,6 @@
 # AI Instruction: Playwright Test Generator
 
-## Objective: Generate a single Playwright TypeScript test file for each Jira task, containing all test cases as separate test blocks, utilizing pre-recorded browser interaction outputs.
+## Objective: Generate a single Playwright TypeScript test file for each Jira task, containing all test cases as separate test blocks. The browser_use_output files are provided solely as additional context for the AI to understand the intended browser interactions, but they should NOT be included, imported, or referenced in any way in the final generated Playwright test files.
 
 ## Input from User:
 
@@ -21,21 +21,16 @@ jira_ticket: The Jira ticket identifier (e.g., AG-1). This will be used to locat
    * Standard Playwright Setup: Include necessary imports: import { test, expect } from '@playwright/test';
    * For each test_case in the read list, do the following:
 
-     a. Identify Output File:
-     * Construct the name of the corresponding browser output file: browser_use_output/<test_case_name>.json. (e.g., if test_case.name is "login scenario", the output file would be "browser_use_output/login_scenario.json").
+     a. (Optional Context for AI) The browser_use_output/<test_case_name>.json file may be provided as context to help the AI understand the intended browser actions for each test case. However, this file is NOT to be included, imported, or referenced in the generated Playwright test file in any way.
 
-     b. Load Browser Output:
-     * Open and read the JSON file specified by browser_use_output/<test_case_name>.json.
-     * Parse the JSON content. This file is assumed to contain a structured representation of browser actions (e.g., navigations, clicks, input fills, assertions). The specific structure needs to be defined for the AI to interpret it. For example, it could be an array of objects, where each object has a type (e.g., "navigate", "click", "fill", "assert"), and other relevant properties.
-
-     c. Generate Playwright Test Block:
+     b. Generate Playwright Test Block:
      * Create a test() block for the current test case inside the <jira_ticket>.spec.ts file: test('<test_case_name>', async ({ page }) => { ... });
-     * Translate Browser Output to Playwright Actions: Based on the parsed browser output from step 4b, generate the corresponding Playwright code within the test() block. This is the core logical step and requires the AI to understand the mapping.
+     * Translate the intended browser actions (as understood from the context or description) into Playwright code within the test() block. This is the core logical step and requires the AI to understand the mapping.
      * Example Mappings:
-       * If browser output indicates a "navigate" action to url: await page.goto('<url>');
-       * If browser output indicates a "click" action on a selector: await page.locator('<selector>').click();
-       * If browser output indicates a "fill" action on a selector with value: await page.locator('<selector>').fill('<value>');
-       * If browser output indicates an "assertion" (e.g., "text_content_check" on selector with expected_text): await expect(page.locator('<selector>')).toHaveText('<expected_text>');
+       * If the intended action is a navigation to a URL: await page.goto('<url>');
+       * If the intended action is a click on a selector: await page.locator('<selector>').click();
+       * If the intended action is a fill on a selector with value: await page.locator('<selector>').fill('<value>');
+       * If the intended action is an assertion (e.g., text content check on selector with expected_text): await expect(page.locator('<selector>')).toHaveText('<expected_text>');
      * Add comments to the generated code for clarity, especially for complex actions or assertions.
 
    * Save Test File: Save the generated Playwright TypeScript code to playwright/tests/<jira_ticket>.spec.ts.
@@ -43,16 +38,15 @@ jira_ticket: The Jira ticket identifier (e.g., AG-1). This will be used to locat
 ## Assumptions for AI:
 
 * The test_cases/ directory exists and contains the specified JSON file named <Jira-Ticket>.json.
-* The browser output .json files are located in the browser_use_output directory.
+* The browser output .json files in browser_use_output/ are provided only as additional context for the AI and must NOT be included, imported, or referenced in the generated test files.
 * The structure of the test_cases/<Jira-Ticket>.json file is an array of objects, each with a name property.
-* The structure of the <test_case_name>.json browser output files is consistent and understandable for mapping to Playwright actions. You may need to provide the AI with a schema or examples of this structure.
+* The structure of the <test_case_name>.json browser output files is consistent and understandable for mapping to Playwright actions, but again, these files are for AI context only.
 * The AI has access to a Playwright-specific knowledge base to correctly translate different types of browser interactions into appropriate Playwright API calls (e.g., click(), fill(), goto(), expect(), locator()).
 * The AI should proceed immediately to generate and save the Playwright test file for all test cases found, without asking for further user confirmation
 
 ## Error Handling (AI Considerations):
 
 * Handle cases where <Jira-Ticket>.json does not exist in test_cases/.
-* Handle cases where a browser_use_output/<test_case_name>.json file is missing or corrupted.
 * Provide informative feedback to the user in case of errors.
 
 Example of Browser Output Structure (for AI understanding):
@@ -83,3 +77,5 @@ Example of Browser Output Structure (for AI understanding):
     "expected_text": "Welcome, testuser!"
   }
 ]
+
+// Note: The above is for AI context only and should not be referenced in the generated test files.
