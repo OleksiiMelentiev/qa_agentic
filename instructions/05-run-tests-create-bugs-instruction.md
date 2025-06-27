@@ -27,6 +27,7 @@ Automate the triage of test failures: run tests, analyze results, and create Jir
   ```sh
   npx playwright test tests/AG-123.spec.ts --reporter=list
   ```
+  **Note:** Wait for the test command to finish and ensure the full output is displayed before proceeding to the next step. This prevents missing or incomplete test results due to premature analysis.
 
 ### 4. Analyze Test Results
 - Parse the output produced by the `list` reporter to understand test results, including pass/fail status, error messages, and stack traces.
