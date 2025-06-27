@@ -27,7 +27,11 @@ Automate the triage of test failures: run tests, analyze results, and create Jir
   ```sh
   npx playwright test tests/AG-123.spec.ts --reporter=list
   ```
-  **Note:** Wait for the test command to finish and ensure the full output is displayed before proceeding to the next step. This prevents missing or incomplete test results due to premature analysis.
+- **Important:**  
+  - **Wait for Completion:** The test command may take some time to run. Do not proceed, analyze, or interact with the output until you see the Playwright summary line with `X failed` and `Y passed` (where X and Y are numbers).  
+  - **Do Not Interrupt:** Ensure the process is not interrupted and allow it to finish naturally, even if there are delays or other messages in the output.
+  - **Ignore Non-Test Errors:** If you encounter any errors or warnings related to PSReadLine or PowerShell (such as initialization errors, module load failures, or similar), ignore these messages. They are not related to the Playwright test results.  
+  - **Proceed Only After Summary:** Only after the summary line appears should you continue to the next step.
 
 ### 4. Analyze Test Results
 - Parse the output produced by the `list` reporter to understand test results, including pass/fail status, error messages, and stack traces.
