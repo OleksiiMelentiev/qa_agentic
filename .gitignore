@@ -12,6 +12,7 @@ yarn-error.log*
 *.iws
 *.ipr
 .vscode/ # Cursor also uses .vscode
+.DS_Store
 
 browser_use_output/
 test_cases/
