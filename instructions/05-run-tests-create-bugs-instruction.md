@@ -1,12 +1,13 @@
-# Test Analysis and Test Fixing Instruction
+# Test Analysis, Bug Creation, and Test Fixing Instruction
 
 ## Objective
-Automate the initial triage of test failures, focusing exclusively on identifying and fixing issues in the test suite itself.
+Automate the triage of test failures: run tests, analyze results, and create Jira bugs for failed tests using MCP, focusing on capturing all relevant failure details.
 
 ## Prerequisites/Assumptions
 - Access to a test execution environment (e.g., Playwright runner).
 - Ability to parse test reports (e.g., JUnit XML, console output).
 - Ability to understand and modify code, especially test scripts.
+- Access to Jira via MCP (Machine Control Platform) for automated bug creation.
 
 ## Step-by-Step Instructions
 
@@ -40,12 +41,36 @@ Automate the initial triage of test failures, focusing exclusively on identifyin
     - Missing/incorrect test dependencies
     - Explicit notes that the product behavior is correct
 
-### 5. Take Action Based on Analysis
+### 5. Create Jira Bugs for Failed Tests (via MCP)
+- For each failed test case, automatically create a Jira bug using MCP with the following details:
+  - Test case name
+  - Error message and stack trace
+  - Test file and location
+  - Steps to reproduce (if available)
+  - Any relevant logs or screenshots
+- Ensure the bug summary and description are clear and actionable.
+- Link the bug to the relevant Jira task identifier.
+- Log the created Jira issue key for each failure.
+
+### 6. Take Action Based on Analysis
 - For each failed test, diagnose the specific line(s) and reason for failure.
-- Propose a concrete code change to the test file.
+- Propose a concrete code change to the test file if the issue is in the test itself.
 - Present the proposed changes as a code diff or modified code block, with an explanation.
 
 ## Example Output
+
+**Jira Bug Creation Example:**
+```
+Jira Bug Created: AG-1234
+Summary: Test 'test_user_creation_success' failed due to assertion error
+Description:
+Test case: test_user_creation_success
+File: tests/AG-123.spec.ts
+Error: AssertionError: expected 'pending' but got 'active'
+Stack trace: ...
+Steps to reproduce: Run the test suite with ...
+Linked to: AG-123
+```
 
 **Test Failure Fix Example:**
 ```diff
@@ -62,6 +87,6 @@ _This test was failing because the status field for newly created users is now '
 
 ## Output/Result
 - All test results are analyzed and categorized.
+- For each failed test, a Jira bug is created via MCP with full details.
 - If a test issue is found, a fix is proposed.
-- If unclear, the user is prompted for further analysis.
-
+- If unclear, the user is prompted for further analysis. 
